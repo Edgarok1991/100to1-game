@@ -147,10 +147,18 @@ const FinalRound = ({ team, questions, onComplete }) => {
           <motion.h1
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="text-7xl font-game text-yellow-300 text-stroke text-center mb-8"
+            className="text-7xl font-game text-yellow-300 text-stroke text-center mb-4"
           >
             БОЛЬШАЯ ИГРА
           </motion.h1>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="text-4xl font-bold text-white text-center mb-8"
+          >
+            Команда: <span className="text-yellow-300">{team.teamName}</span>
+          </motion.div>
 
           {/* Results Table */}
           <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 border-4 border-yellow-400 mb-8">
@@ -167,7 +175,7 @@ const FinalRound = ({ team, questions, onComplete }) => {
                   <div className="grid grid-cols-2 gap-4">
                     {/* Player 1 */}
                     <div className="bg-blue-600/30 rounded-lg p-4">
-                      <div className="text-sm text-blue-300 mb-2">Игрок 1</div>
+                      <div className="text-sm text-blue-300 mb-2">Участник 1 ({team.teamName})</div>
                       <div className="text-2xl font-bold text-white mb-2">{player1Answers[idx] || '—'}</div>
                       {revealIndex >= idx && (
                         <motion.div
@@ -199,7 +207,7 @@ const FinalRound = ({ team, questions, onComplete }) => {
 
                     {/* Player 2 */}
                     <div className="bg-red-600/30 rounded-lg p-4">
-                      <div className="text-sm text-red-300 mb-2">Игрок 2</div>
+                      <div className="text-sm text-red-300 mb-2">Участник 2 ({team.teamName})</div>
                       <div className="text-2xl font-bold text-white mb-2">{player2Answers[idx] || '—'}</div>
                       {revealIndex >= idx && (
                         <motion.div
@@ -247,7 +255,8 @@ const FinalRound = ({ team, questions, onComplete }) => {
           <div className="grid grid-cols-3 gap-4 mb-8">
             <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 text-center border-4 border-white">
               <User className="w-12 h-12 text-yellow-300 mx-auto mb-2" />
-              <div className="text-xl text-white font-bold mb-2">Игрок 1</div>
+              <div className="text-xl text-white font-bold mb-2">Участник 1</div>
+              <div className="text-sm text-yellow-200 mb-2">{team.teamName}</div>
               <div className="text-5xl font-game text-yellow-300">{player1Score}</div>
             </div>
 
@@ -260,7 +269,8 @@ const FinalRound = ({ team, questions, onComplete }) => {
 
             <div className="bg-gradient-to-br from-red-600 to-red-800 rounded-xl p-6 text-center border-4 border-white">
               <User className="w-12 h-12 text-yellow-300 mx-auto mb-2" />
-              <div className="text-xl text-white font-bold mb-2">Игрок 2</div>
+              <div className="text-xl text-white font-bold mb-2">Участник 2</div>
+              <div className="text-sm text-yellow-200 mb-2">{team.teamName}</div>
               <div className="text-5xl font-game text-yellow-300">{player2Score}</div>
             </div>
           </div>
@@ -279,8 +289,11 @@ const FinalRound = ({ team, questions, onComplete }) => {
                   <h2 className="text-6xl font-game text-white text-stroke mb-4">
                     ПОБЕДА!
                   </h2>
-                  <p className="text-3xl text-white">
-                    {team.teamName} выиграли БОЛЬШУЮ ИГРУ!
+                  <p className="text-3xl text-white mb-4">
+                    Команда "{team.teamName}" выиграла БОЛЬШУЮ ИГРУ!
+                  </p>
+                  <p className="text-2xl text-yellow-300">
+                    Два участника команды набрали {totalScore} очков!
                   </p>
                 </div>
               ) : (
@@ -316,18 +329,33 @@ const FinalRound = ({ team, questions, onComplete }) => {
           animate={{ scale: 1, opacity: 1 }}
           className="text-center"
         >
-          <h1 className="text-8xl font-game text-yellow-300 text-stroke mb-8">
+          <h1 className="text-8xl font-game text-yellow-300 text-stroke mb-4">
             БОЛЬШАЯ ИГРА
           </h1>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-4xl font-bold text-white mb-8"
+          >
+            🏆 Команда: <span className="text-yellow-300">{team.teamName}</span>
+          </motion.div>
           <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl p-12 border-4 border-yellow-400 max-w-3xl">
             <User className="w-32 h-32 text-yellow-300 mx-auto mb-6" />
-            <h2 className="text-5xl font-bold text-white mb-6">Игрок 1</h2>
+            <h2 className="text-5xl font-bold text-white mb-4">Первый участник</h2>
+            <div className="text-2xl text-yellow-300 mb-6">из команды "{team.teamName}"</div>
             <p className="text-2xl text-white mb-4">
               Ответьте на 5 вопросов за 20 секунд каждый!
             </p>
-            <p className="text-xl text-yellow-300 mb-8">
-              Цель: набрать 200 очков вместе со вторым игроком
+            <p className="text-xl text-yellow-300 mb-4">
+              Цель: набрать 200 очков вместе со вторым участником команды
             </p>
+            <div className="bg-white/10 rounded-xl p-4 mb-8">
+              <p className="text-lg text-white">
+                ⚡ После вас второй участник вашей команды<br/>
+                ответит на те же вопросы
+              </p>
+            </div>
             <button
               onClick={() => handleStartPlayer(1)}
               className="bg-yellow-500 hover:bg-yellow-600 text-black px-12 py-6 rounded-2xl font-bold text-3xl"
@@ -348,17 +376,34 @@ const FinalRound = ({ team, questions, onComplete }) => {
           animate={{ scale: 1, opacity: 1 }}
           className="text-center"
         >
-          <h1 className="text-8xl font-game text-yellow-300 text-stroke mb-8">
+          <h1 className="text-8xl font-game text-yellow-300 text-stroke mb-4">
             БОЛЬШАЯ ИГРА
           </h1>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-4xl font-bold text-white mb-8"
+          >
+            🏆 Команда: <span className="text-yellow-300">{team.teamName}</span>
+          </motion.div>
           <div className="bg-gradient-to-br from-red-600 to-red-800 rounded-3xl p-12 border-4 border-yellow-400 max-w-3xl">
             <User className="w-32 h-32 text-yellow-300 mx-auto mb-6" />
-            <h2 className="text-5xl font-bold text-white mb-6">Игрок 2</h2>
+            <h2 className="text-5xl font-bold text-white mb-4">Второй участник</h2>
+            <div className="text-2xl text-yellow-300 mb-6">из команды "{team.teamName}"</div>
             <p className="text-2xl text-white mb-4">
               Ваша очередь! Ответьте на те же вопросы!
             </p>
-            <div className="text-3xl text-yellow-300 mb-8">
-              Игрок 1 набрал: {player1Score} очков
+            <div className="bg-green-500/20 rounded-xl p-4 mb-4 border-2 border-green-400">
+              <p className="text-2xl font-bold text-green-300">
+                ✅ Первый участник набрал: {player1Score} очков
+              </p>
+            </div>
+            <div className="bg-white/10 rounded-xl p-4 mb-8">
+              <p className="text-lg text-white">
+                🎯 Вам нужно набрать ещё {Math.max(0, 200 - player1Score)} очков<br/>
+                для победы в Большой игре!
+              </p>
             </div>
             <button
               onClick={() => handleStartPlayer(2)}
@@ -375,13 +420,16 @@ const FinalRound = ({ team, questions, onComplete }) => {
   return (
     <div className="min-h-screen flex items-center justify-center p-8">
       <div className="max-w-4xl w-full">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div className={`bg-gradient-to-r ${currentPlayer === 1 ? 'from-blue-600 to-blue-800' : 'from-red-600 to-red-800'} rounded-xl px-8 py-4 border-4 border-white`}>
-            <div className="text-2xl font-bold text-white">
-              Игрок {currentPlayer}
-            </div>
+      {/* Header */}
+      <div className="flex justify-between items-center mb-8">
+        <div className={`bg-gradient-to-r ${currentPlayer === 1 ? 'from-blue-600 to-blue-800' : 'from-red-600 to-red-800'} rounded-xl px-8 py-4 border-4 border-white`}>
+          <div className="text-2xl font-bold text-white">
+            Участник {currentPlayer}
           </div>
+          <div className="text-sm text-yellow-300">
+            {team.teamName}
+          </div>
+        </div>
 
           <div className="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl px-8 py-4 border-4 border-white flex items-center gap-3">
             <Timer className="w-8 h-8 text-white" />
