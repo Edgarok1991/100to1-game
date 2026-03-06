@@ -15,6 +15,14 @@ const FinalRound = ({ team, questions, onComplete }) => {
   const [timeLeft, setTimeLeft] = useState(20);
   const [isTimerActive, setIsTimerActive] = useState(false);
 
+  // Отладка - вывод вопросов в консоль
+  useEffect(() => {
+    console.log('=== ФИНАЛЬНЫЙ РАУНД ===');
+    console.log('Количество вопросов:', questions.length);
+    console.log('Вопросы:', questions.map((q, i) => `${i + 1}. ${q.question}`));
+    console.log('Первый вопрос:', questions[0]);
+  }, [questions]);
+
   useEffect(() => {
     if (isTimerActive && timeLeft > 0) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
