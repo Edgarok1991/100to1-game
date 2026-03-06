@@ -48,10 +48,27 @@ const FinalRound = ({ team, questions, onComplete }) => {
     } else {
       setIsTimerActive(false);
       if (currentPlayer === 1) {
+        // Подсчитаем очки первого игрока
+        let score1 = 0;
+        const allAnswers = [...player1Answers, ans];
+        allAnswers.forEach((answer, idx) => {
+          const question = questions[idx];
+          const matchedAnswer = question.answers.find(a => 
+            a.text.toLowerCase().includes(answer.toLowerCase()) || 
+            answer.toLowerCase().includes(a.text.toLowerCase())
+          );
+          if (matchedAnswer) {
+            score1 += matchedAnswer.points;
+          }
+        });
+        setPlayer1Score(score1);
+        
         // Переход ко второму игроку
         setTimeout(() => {
+          setCurrentPlayer(2);
           setCurrentQuestion(0);
           setCurrentInput('');
+          setTimeLeft(20);
         }, 1000);
       } else {
         // Показать результаты
@@ -67,19 +84,8 @@ const FinalRound = ({ team, questions, onComplete }) => {
   };
 
   const calculateScores = () => {
-    let score1 = 0;
+    // Очки первого игрока уже подсчитаны, используем их
     let score2 = 0;
-
-    player1Answers.forEach((answer, idx) => {
-      const question = questions[idx];
-      const matchedAnswer = question.answers.find(a => 
-        a.text.toLowerCase().includes(answer.toLowerCase()) || 
-        answer.toLowerCase().includes(a.text.toLowerCase())
-      );
-      if (matchedAnswer) {
-        score1 += matchedAnswer.points;
-      }
-    });
 
     player2Answers.forEach((answer, idx) => {
       const question = questions[idx];
@@ -106,7 +112,6 @@ const FinalRound = ({ team, questions, onComplete }) => {
       }
     });
 
-    setPlayer1Score(score1);
     setPlayer2Score(score2);
     setShowResults(true);
   };
@@ -123,10 +128,10 @@ const FinalRound = ({ team, questions, onComplete }) => {
       <div className="min-h-screen flex items-center justify-center p-8 relative overflow-hidden">
         {/* Animated Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(30)].map((_, i) => (
+          {[...Array(10)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-3 h-3 bg-yellow-300/20 rounded-full"
+              className="absolute w-2 h-2 bg-yellow-300/20 rounded-full"
               animate={{
                 x: [Math.random() * window.innerWidth, Math.random() * window.innerWidth],
                 y: [Math.random() * window.innerHeight, Math.random() * window.innerHeight],
@@ -134,6 +139,7 @@ const FinalRound = ({ team, questions, onComplete }) => {
               transition={{
                 duration: Math.random() * 15 + 10,
                 repeat: Infinity,
+                ease: "linear"
               }}
             />
           ))}
