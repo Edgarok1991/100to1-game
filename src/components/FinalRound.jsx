@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Timer, User, CheckCircle, XCircle } from 'lucide-react';
-import { useSynthSounds } from '../hooks/useSounds.js';
 
 const FinalRound = ({ team, questions, onComplete }) => {
   const [currentPlayer, setCurrentPlayer] = useState(1);
@@ -15,22 +14,15 @@ const FinalRound = ({ team, questions, onComplete }) => {
   const [currentInput, setCurrentInput] = useState('');
   const [timeLeft, setTimeLeft] = useState(20);
   const [isTimerActive, setIsTimerActive] = useState(false);
-  
-  // Звуковые эффекты
-  const sounds = useSynthSounds();
 
   useEffect(() => {
     if (isTimerActive && timeLeft > 0) {
-      // Звук тика на последних 5 секундах
-      if (timeLeft <= 5) {
-        sounds.playTickSound();
-      }
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
     } else if (timeLeft === 0 && currentQuestion < questions.length) {
       handleSubmitAnswer('');
     }
-  }, [timeLeft, isTimerActive, sounds]);
+  }, [timeLeft, isTimerActive]);
 
   const handleStartPlayer = (playerNum) => {
     setCurrentPlayer(playerNum);
@@ -125,21 +117,11 @@ const FinalRound = ({ team, questions, onComplete }) => {
   };
 
   const revealAnswer = (idx) => {
-    sounds.playFlipSound();
     setRevealIndex(idx);
   };
 
   const totalScore = player1Score + player2Score;
   const isWinner = totalScore >= 200;
-  
-  // Звук победы при достижении 200 очков
-  useEffect(() => {
-    if (showResults && isWinner) {
-      setTimeout(() => {
-        sounds.playVictorySound();
-      }, 1000);
-    }
-  }, [showResults, isWinner, sounds]);
 
   if (showResults) {
     return (
