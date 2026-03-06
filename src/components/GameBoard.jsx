@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnswerCard from './AnswerCard.jsx';
 import { Sparkles, Trophy, RefreshCw, Zap, Flame, RotateCcw, Users, ArrowRight } from 'lucide-react';
+import { useSynthSounds } from '../hooks/useSounds.js';
 
 const GameBoard = ({ 
   question, 
@@ -19,6 +20,9 @@ const GameBoard = ({
   const [showScorePopup, setShowScorePopup] = useState(false);
   const [stealMode, setStealMode] = useState(false);
   const [showStealPrompt, setShowStealPrompt] = useState(false);
+  
+  // Звуковые эффекты
+  const sounds = useSynthSounds();
 
   useEffect(() => {
     setRevealedAnswers(new Set());
@@ -42,6 +46,9 @@ const GameBoard = ({
 
   const handleAnswerClick = (index) => {
     if (revealedAnswers.has(index) || gameOver) return;
+
+    // Звук правильного ответа
+    sounds.playCorrectSound();
 
     const newRevealed = new Set(revealedAnswers);
     newRevealed.add(index);
@@ -72,6 +79,9 @@ const GameBoard = ({
 
   const handleMistake = () => {
     if (gameOver) return;
+
+    // Звук ошибки
+    sounds.playWrongSound();
 
     const teamKey = `team${currentTeam}`;
     const newMistakes = teamMistakes[teamKey] + 1;
